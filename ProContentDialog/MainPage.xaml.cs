@@ -32,8 +32,8 @@ namespace ProContentDialog
                 proContentDialog.VerticalContentAlignment = VerticalAlignment.Top;
                 proContentDialog.ContentMargin = new Thickness(0, 100, 0, -100);
             }
-            else
-                proContentDialog.ContentMargin = new Thickness(0, 0, 0, 0);
+            //else
+            //    proContentDialog.cont
         }
     }
 }

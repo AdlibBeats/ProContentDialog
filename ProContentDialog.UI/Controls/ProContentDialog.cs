@@ -27,8 +27,8 @@ namespace ProContentDialog.UI.Controls
             _root = this.GetTemplateChild("Root") as Grid;
             _rootContent = this.GetTemplateChild("RootContent") as Grid;
 
-            UpdateBackground(this.Background);
             UpdateFullSizeDesired(this.FullSizeDesired);
+            UpdateBackground(this.Background);
             UpdateHorizontalContentAlignment(this.HorizontalContentAlignment);
             UpdateVerticalContentAlignment(this.VerticalContentAlignment);
             UpdateContentMargin(this.ContentMargin);
@@ -41,87 +41,13 @@ namespace ProContentDialog.UI.Controls
         private void UpdateVerticalContentAlignment(VerticalAlignment value)
         {
             if (_rootContent == null) return;
-
-            Grid.SetRow(_rootContent, 0);
-            Grid.SetRowSpan(_rootContent, 3);
-
-            switch (value)
-            {
-                case VerticalAlignment.Stretch:break;
-                case VerticalAlignment.Center: break;
-                case VerticalAlignment.Top:
-                    if (this.FullSizeDesired)
-                        UpdateContentHeight(new GridLength(1, GridUnitType.Star));
-                    else
-                        UpdateContentHeight(new GridLength(0, GridUnitType.Auto));
-                    break;
-                case VerticalAlignment.Bottom:
-                    if (this.FullSizeDesired)
-                        UpdateContentHeight(new GridLength(1, GridUnitType.Star));
-                    else
-                    {
-                        UpdateContentHeight(new GridLength(0, GridUnitType.Auto));
-
-                        Grid.SetRow(_rootContent, 2);
-                        Grid.SetRowSpan(_rootContent, 3);
-                    }
-                    break;
-            }
-
             _rootContent.VerticalAlignment = value;
         }
 
         private void UpdateHorizontalContentAlignment(HorizontalAlignment value)
         {
             if (_rootContent == null) return;
-
-            Grid.SetColumn(_rootContent, 0);
-            Grid.SetColumnSpan(_rootContent, 3);
-
-            switch (value)
-            {
-                case HorizontalAlignment.Stretch: break;
-                case HorizontalAlignment.Center: break;
-                case HorizontalAlignment.Left:
-                    if (this.FullSizeDesired)
-                        UpdateContentWidth(new GridLength(1, GridUnitType.Star));
-                    else
-                        UpdateContentWidth(new GridLength(0, GridUnitType.Auto));
-                    break;
-                case HorizontalAlignment.Right:
-                    if (this.FullSizeDesired)
-                        UpdateContentWidth(new GridLength(1, GridUnitType.Star));
-                    else
-                    {
-                        UpdateContentWidth(new GridLength(0, GridUnitType.Auto));
-
-                        Grid.SetColumn(_rootContent, 2);
-                        Grid.SetColumnSpan(_rootContent, 3);
-                    }
-                    break;
-            }
-
             _rootContent.HorizontalAlignment = value;
-        }
-
-        private void UpdateContentHeight(GridLength value)
-        {
-            if (_root == null || !_root.RowDefinitions.Any()) return;
-
-            var row = _root.RowDefinitions.ElementAt(1);
-            if (row == null) return;
-
-            row.Height = value;
-        }
-
-        private void UpdateContentWidth(GridLength value)
-        {
-            if (_root == null || !_root.ColumnDefinitions.Any()) return;
-
-            var column = _root.ColumnDefinitions.ElementAt(1);
-            if (column == null) return;
-
-            column.Width = value;
         }
 
         private void UpdateContentMargin(Thickness value)
@@ -148,46 +74,9 @@ namespace ProContentDialog.UI.Controls
             _root.Background = value;
         }
 
-        private void UpdateContentPanel(bool value)
-        {
-            if (_rootContent == null) return;
-            if (value)
-            {
-                Grid.SetColumn(_rootContent, 0);
-                Grid.SetRow(_rootContent, 0);
-                Grid.SetColumnSpan(_rootContent, 3);
-                Grid.SetRowSpan(_rootContent, 3);
-            }
-            else
-            {
-                Grid.SetColumn(_rootContent, 1);
-                Grid.SetRow(_rootContent, 1);
-                Grid.SetColumnSpan(_rootContent, 1);
-                Grid.SetRowSpan(_rootContent, 1);
-            }
-        }
-
         private void UpdateFullSizeDesired(bool value)
         {
-            if (_rootContent == null) return;
-            if (value)
-            {
-                this.Background = new SolidColorBrush(Color.FromArgb(100, 200, 200, 200));
-                this.ContentWidth = new GridLength(1, GridUnitType.Star);
-                this.ContentHeight = new GridLength(1, GridUnitType.Star);
-                this.HorizontalContentAlignment = HorizontalAlignment.Stretch;
-                this.VerticalContentAlignment = VerticalAlignment.Stretch;
-                UpdateContentPanel(true);
-            }
-            else
-            {
-                this.Background = new SolidColorBrush(Color.FromArgb(100, 200, 200, 200));
-                this.ContentWidth = new GridLength(0, GridUnitType.Auto);
-                this.ContentHeight = new GridLength(0, GridUnitType.Auto);
-                this.HorizontalContentAlignment = HorizontalAlignment.Center;
-                this.VerticalContentAlignment = VerticalAlignment.Center;
-                UpdateContentPanel(false);
-            }
+            VisualStateManager.GoToState(this, (value) ? "FullSize" : "MinSize", true);
         }
         #endregion
 
@@ -306,40 +195,6 @@ namespace ProContentDialog.UI.Controls
             if (control == null) return;
 
             control.UpdateHorizontalContentAlignment((HorizontalAlignment)e.NewValue);
-        }
-
-        public GridLength ContentWidth
-        {
-            get { return (GridLength)GetValue(ContentWidthProperty); }
-            private set { SetValue(ContentWidthProperty, value); }
-        }
-
-        public static readonly DependencyProperty ContentWidthProperty =
-            DependencyProperty.Register(nameof(ContentWidth), typeof(GridLength), typeof(ProContentDialog), new PropertyMetadata(new GridLength(0, GridUnitType.Auto), OnContentWidthChanged));
-
-        private static void OnContentWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var control = d as ProContentDialog;
-            if (control == null) return;
-
-            control.UpdateContentWidth((GridLength)e.NewValue);
-        }
-
-        public GridLength ContentHeight
-        {
-            get { return (GridLength)GetValue(ContentHeightProperty); }
-            private set { SetValue(ContentHeightProperty, value); }
-        }
-
-        public static readonly DependencyProperty ContentHeightProperty =
-            DependencyProperty.Register(nameof(ContentHeight), typeof(GridLength), typeof(ProContentDialog), new PropertyMetadata(new GridLength(0, GridUnitType.Auto), OnContentHeightChanged));
-
-        private static void OnContentHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var control = d as ProContentDialog;
-            if (control == null) return;
-
-            control.UpdateContentHeight((GridLength)e.NewValue);
         }
 
         public bool FullSizeDesired
