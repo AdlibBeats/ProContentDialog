@@ -51,22 +51,17 @@ namespace ProContentDialog.UI.Controls
                 case VerticalAlignment.Center: break;
                 case VerticalAlignment.Top:
                     if (this.FullSizeDesired)
-                    {
                         UpdateContentHeight(new GridLength(1, GridUnitType.Star));
-                    }
                     else
-                    {
                         UpdateContentHeight(new GridLength(0, GridUnitType.Auto));
-                    }
                     break;
                 case VerticalAlignment.Bottom:
                     if (this.FullSizeDesired)
-                    {
                         UpdateContentHeight(new GridLength(1, GridUnitType.Star));
-                    }
                     else
                     {
                         UpdateContentHeight(new GridLength(0, GridUnitType.Auto));
+
                         Grid.SetRow(_rootContent, 2);
                         Grid.SetRowSpan(_rootContent, 3);
                     }
@@ -89,22 +84,17 @@ namespace ProContentDialog.UI.Controls
                 case HorizontalAlignment.Center: break;
                 case HorizontalAlignment.Left:
                     if (this.FullSizeDesired)
-                    {
                         UpdateContentWidth(new GridLength(1, GridUnitType.Star));
-                    }
                     else
-                    {
                         UpdateContentWidth(new GridLength(0, GridUnitType.Auto));
-                    }
                     break;
                 case HorizontalAlignment.Right:
                     if (this.FullSizeDesired)
-                    {
                         UpdateContentWidth(new GridLength(1, GridUnitType.Star));
-                    }
                     else
                     {
                         UpdateContentWidth(new GridLength(0, GridUnitType.Auto));
+
                         Grid.SetColumn(_rootContent, 2);
                         Grid.SetColumnSpan(_rootContent, 3);
                     }
@@ -182,16 +172,20 @@ namespace ProContentDialog.UI.Controls
             if (_rootContent == null) return;
             if (value)
             {
-                UpdateBackground(new SolidColorBrush(Color.FromArgb(100, 200, 200, 200)));
-                UpdateContentWidth(new GridLength(1, GridUnitType.Star));
-                UpdateContentHeight(new GridLength(1, GridUnitType.Star));
+                this.Background = new SolidColorBrush(Color.FromArgb(100, 200, 200, 200));
+                this.ContentWidth = new GridLength(1, GridUnitType.Star);
+                this.ContentHeight = new GridLength(1, GridUnitType.Star);
+                this.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+                this.VerticalContentAlignment = VerticalAlignment.Stretch;
                 UpdateContentPanel(true);
             }
             else
             {
-                UpdateBackground(new SolidColorBrush(Color.FromArgb(100, 200, 200, 200)));
-                UpdateContentWidth(new GridLength(0, GridUnitType.Auto));
-                UpdateContentHeight(new GridLength(0, GridUnitType.Auto));
+                this.Background = new SolidColorBrush(Color.FromArgb(100, 200, 200, 200));
+                this.ContentWidth = new GridLength(0, GridUnitType.Auto);
+                this.ContentHeight = new GridLength(0, GridUnitType.Auto);
+                this.HorizontalContentAlignment = HorizontalAlignment.Center;
+                this.VerticalContentAlignment = VerticalAlignment.Center;
                 UpdateContentPanel(false);
             }
         }
