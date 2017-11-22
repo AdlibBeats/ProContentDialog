@@ -29,9 +29,9 @@ namespace ProContentDialog
 
             if (!proContentDialog.FullSizeDesired)
             {
-                proContentDialog.VerticalContentAlignment = VerticalAlignment.Center;
-                proContentDialog.HorizontalContentAlignment = HorizontalAlignment.Left;
-                proContentDialog.ContentMargin = new Thickness(100, 0, -100, 0);
+                proContentDialog.VerticalContentAlignment = VerticalAlignment.Top;
+                proContentDialog.HorizontalContentAlignment = HorizontalAlignment.Center;
+                proContentDialog.ContentMargin = new Thickness(0, 100, 0, -100);
             }
             else
             {

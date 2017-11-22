@@ -11,7 +11,7 @@
     <Grid Background="White">
         <Button Height="50" VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
                    Content="fgdfglgdfgld;;kfgl;df;gdf;gkdf;gk;dfgkdf;g'dfgldfgk;dfgk;ldfgkldfgk;fg;dfhdfhdfhdfhdfhdfhdfhdfhdfhdfdfgk;dfkgdlgkd;fgkdfl;g"/>
-        <custom:ProContentDialog x:Name="proContentDialog" FullSizeDesired="False" ContentMargin="100, 0, -100, 0" HorizontalContentAlignment="Left">
+        <custom:ProContentDialog x:Name="proContentDialog" FullSizeDesired="False" ContentMargin="0, 100, -0, -100" VerticalContentAlignment="Top">
             <StackPanel>
                 <TextBlock Text="hedfhfhdfhdfhdfhdfhhdhllo" FontSize="60" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <TextBlock Text="hedfhfhdfhdfhdfhdfhhdhllo" FontSize="60" HorizontalAlignment="Center" VerticalAlignment="Center"/>
