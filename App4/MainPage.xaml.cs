@@ -22,8 +22,7 @@ namespace App4
         {
             //RTDContentDialog.FullSizeDesire = true;
 
-            //RTDContentDialog.CanAnimate = true;
-
+            RTDContentDialog.CanAnimate = true;
             sp1.Children.Add(new TextBox()
             {
                 PlaceholderText = "Иванов sp1",
@@ -41,7 +40,7 @@ namespace App4
 
         private void OnBackwardButtonTapped(object sender, TappedRoutedEventArgs e)
         {
-            //RTDContentDialog.CanAnimate = true;
+            RTDContentDialog.CanAnimate = true;
             sp1.Children.Remove(sp1.Children.LastOrDefault());
             sp2.Children.Remove(sp2.Children.LastOrDefault());
 
@@ -56,6 +55,8 @@ namespace App4
         public MainPage()
         {
             this.InitializeComponent();
+
+            RTDContentDialog.CanAnimate = true;
         }
 
         //bool IsControlChangedOrSetNewControl = false;
