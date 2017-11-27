@@ -26,7 +26,7 @@
                                         <FadeOutThemeAnimation TargetName="LayoutRoot"/>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LayoutRoot"
                                                                        Storyboard.TargetProperty="Visibility">
-                                            <DiscreteObjectKeyFrame KeyTime="0:0:1" Value="Collapsed"/>
+                                            <DiscreteObjectKeyFrame KeyTime="0:0:0.5" Value="Collapsed"/>
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>

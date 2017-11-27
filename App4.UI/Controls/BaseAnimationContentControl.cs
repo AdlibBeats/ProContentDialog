@@ -10,6 +10,10 @@ namespace App4.UI.Controls
 {
     public class BaseAnimationContentControl : Control
     {
+        private FrameworkElement _frameworkElementContent;
+
+        public event RoutedEventHandler AnimationCompleted;
+
         public BaseAnimationContentControl()
         {
             this.DefaultStyleKey = typeof(BaseAnimationContentControl);
@@ -21,6 +25,74 @@ namespace App4.UI.Controls
 
             UpdateContent(this.Content);
         }
+
+        private void UpdateCanAnimate(bool value)
+        {
+            _frameworkElementContent = this.Content as FrameworkElement;
+            if (_frameworkElementContent == null) return;
+
+            _frameworkElementContent.SizeChanged -= OnSizeChanged;
+
+            if (value)
+                _frameworkElementContent.SizeChanged += OnSizeChanged;
+
+            void OnSizeChanged(object sender, SizeChangedEventArgs e) =>
+                StartAnimation(_frameworkElementContent, e.PreviousSize.Height, e.NewSize.Height, this.StoryboardDuration, this.StoryboardPath);
+        }
+
+        private void UpdateContent(object value)
+        {
+            var contentPresenter = this.GetTemplateChild("ContentPresenter") as ContentPresenter;
+            if (contentPresenter == null) return;
+
+            contentPresenter.Content = value;
+
+            UpdateCanAnimate(this.CanAnimate);
+        }
+        
+        private void StartAnimation(FrameworkElement frameworkElement, double from, double to, Duration storyboardDuration, string storyboardPath)
+        {
+            if (!this.IsAnimationCompleted) return;
+
+            this.IsAnimationCompleted = false;
+
+            var doubleAnimation = GetDoubleAnimation(from, to, storyboardDuration);
+            var easingFunction = GetEasingFunction(EasingMode.EaseOut, 2);
+
+            doubleAnimation.EasingFunction = easingFunction;
+
+            Storyboard.SetTarget(doubleAnimation, frameworkElement);
+            Storyboard.SetTargetProperty(doubleAnimation, storyboardPath);
+
+            Storyboard storyboard = new Storyboard();
+
+            storyboard.Completed -= OnCompleted;
+            storyboard.Completed += OnCompleted;
+
+            void OnCompleted(object sender, object e)
+            {
+                this.IsAnimationCompleted = true;
+                AnimationCompleted?.Invoke(this, new RoutedEventArgs());
+            };
+
+            storyboard.Children.Add(doubleAnimation);
+            storyboard.Begin();
+        }
+
+        private DoubleAnimation GetDoubleAnimation(double from, double to, Duration storyboardDuration) => new DoubleAnimation
+        {
+            Duration = storyboardDuration,
+            From = from,
+            To = to,
+            EnableDependentAnimation = true,
+            AutoReverse = false
+        };
+
+        private ElasticEase GetEasingFunction(EasingMode easingMode, int oscillations) => new ElasticEase
+        {
+            EasingMode = EasingMode.EaseOut,
+            Oscillations = 2
+        };
 
         public object Content
         {
@@ -39,6 +111,15 @@ namespace App4.UI.Controls
             baseAnimationContentControl.UpdateContent(e.NewValue);
         }
 
+        public bool IsAnimationCompleted
+        {
+            get { return (bool)GetValue(IsAnimationCompletedProperty); }
+            private set { SetValue(IsAnimationCompletedProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsAnimationCompletedProperty =
+            DependencyProperty.Register("IsAnimationCompleted", typeof(bool), typeof(BaseAnimationContentControl), new PropertyMetadata(true));
+
         public bool CanAnimate
         {
             get { return (bool)GetValue(CanAnimateProperty); }
@@ -46,75 +127,32 @@ namespace App4.UI.Controls
         }
 
         public static readonly DependencyProperty CanAnimateProperty =
-            DependencyProperty.Register("CanAnimate", typeof(bool), typeof(BaseAnimationContentControl), new PropertyMetadata(false));
+            DependencyProperty.Register("CanAnimate", typeof(bool), typeof(BaseAnimationContentControl), new PropertyMetadata(true, OnCanAnimateChanged));
 
-        public Duration Duration
+        private static void OnCanAnimateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            get { return (Duration)GetValue(DurationProperty); }
-            set { SetValue(DurationProperty, value); }
+            var baseAnimationContentControl = d as BaseAnimationContentControl;
+            if (baseAnimationContentControl == null) return;
+
+            baseAnimationContentControl.UpdateCanAnimate((bool)e.NewValue);
         }
 
-        public static readonly DependencyProperty DurationProperty =
-            DependencyProperty.Register("Duration", typeof(Duration), typeof(BaseAnimationContentControl), new PropertyMetadata(new Duration(TimeSpan.FromSeconds(0.5))));
-
-        private void UpdateContent(object value)
+        public Duration StoryboardDuration
         {
-            var rootContent = this.GetTemplateChild("ContentPresenter") as ContentPresenter;
-            if (rootContent != null)
-                rootContent.Content = value;
-
-            var frameworkElement = value as FrameworkElement;
-            if (frameworkElement == null) return;
-
-            frameworkElement.SizeChanged -= OnSizeChanged;
-            frameworkElement.SizeChanged += OnSizeChanged;
-
-            void OnSizeChanged(object sender, SizeChangedEventArgs e)
-            {
-                //Debug.WriteLine(frameworkElement.DesiredSize);
-                //Debug.WriteLine(frameworkElement.RenderSize);
-
-                StartAnimation(frameworkElement, e.PreviousSize.Height, e.NewSize.Height);
-            }
+            get { return (Duration)GetValue(StoryboardDurationProperty); }
+            set { SetValue(StoryboardDurationProperty, value); }
         }
 
-        private void StartAnimation(FrameworkElement frameworkElement, double from, double to)
+        public static readonly DependencyProperty StoryboardDurationProperty =
+            DependencyProperty.Register("StoryboardDuration", typeof(Duration), typeof(BaseAnimationContentControl), new PropertyMetadata(new Duration(TimeSpan.FromSeconds(0.5))));
+
+        public string StoryboardPath
         {
-            if (this.CanAnimate)
-            {
-                var animation = new DoubleAnimation()
-                {
-                    Duration = this.Duration,
-                    From = from,
-                    To = to,
-                    EnableDependentAnimation = true,
-                    AutoReverse = false
-                };
-
-                var easingFunction = new ElasticEase()
-                {
-                    EasingMode = EasingMode.EaseOut,
-                    Oscillations = 2
-                };
-
-                animation.EasingFunction = easingFunction;
-
-                Storyboard.SetTarget(animation, frameworkElement);
-                Storyboard.SetTargetProperty(animation, "Height");
-
-                Storyboard storyboard = new Storyboard();
-
-                storyboard.Completed -= OnCompleted;
-                storyboard.Completed += OnCompleted;
-
-                void OnCompleted(object sender, object e) =>
-                    frameworkElement.Height = to;
-
-                storyboard.Children.Add(animation);
-                storyboard.Begin();
-
-                this.CanAnimate = false;
-            }
+            get { return (string)GetValue(StoryboardPathProperty); }
+            set { SetValue(StoryboardPathProperty, value); }
         }
+
+        public static readonly DependencyProperty StoryboardPathProperty =
+            DependencyProperty.Register("StoryboardPath", typeof(string), typeof(BaseAnimationContentControl), new PropertyMetadata("Height"));
     }
 }

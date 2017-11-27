@@ -26,7 +26,7 @@
                     <Run Text="*" FontSize="16" Foreground="#9F0012"/>
                     <Run Text="», обязательны к заполнению"/>
                     </TextBlock>
-                    <StackPanel Margin="10,0" x:Name="content" Orientation="Horizontal" SizeChanged="StackPanel_SizeChanged">
+                    <StackPanel Margin="10,0" x:Name="content" Orientation="Horizontal">
                         <StackPanel x:Name="sp1" Margin="10,0" Width="200" Orientation="Vertical">
                             <TextBox PlaceholderText="Иванов" Header="Фамилия"
                                             FontSize="16"/>

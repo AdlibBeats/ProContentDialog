@@ -20,9 +20,8 @@ namespace App4
     {
         private void OnFinishButtonTapped(object sender, TappedRoutedEventArgs e)
         {
-            //RTDContentDialog.FullSizeDesire = true;
+            if (!RTDContentDialog.IsAnimationCompleted) return;
 
-            RTDContentDialog.CanAnimate = true;
             sp1.Children.Add(new TextBox()
             {
                 PlaceholderText = "Иванов sp1",
@@ -36,11 +35,14 @@ namespace App4
                 Header = "Информация sp2",
                 FontSize = 16
             });
+
+            //RTDContentDialog.Content = new Grid { Width = 200, Height = 300, Background = new SolidColorBrush(Colors.AliceBlue) };
         }
 
         private void OnBackwardButtonTapped(object sender, TappedRoutedEventArgs e)
         {
-            RTDContentDialog.CanAnimate = true;
+            if (!RTDContentDialog.IsAnimationCompleted) return;
+
             sp1.Children.Remove(sp1.Children.LastOrDefault());
             sp2.Children.Remove(sp2.Children.LastOrDefault());
 
@@ -55,85 +57,6 @@ namespace App4
         public MainPage()
         {
             this.InitializeComponent();
-
-            RTDContentDialog.CanAnimate = true;
         }
-
-        //bool IsControlChangedOrSetNewControl = false;
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            //if (!IsControlChangedOrSetNewControl)
-            //{
-            //    SetNewContent();
-            //    IsControlChangedOrSetNewControl = false;
-            //}
-            //else
-            //    ChangeContentSize();
-
-            //IsControlChangedOrSetNewControl = true;
-        }
-
-        private void StackPanel_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            //content.Measure(e.NewSize);
-        }
-
-        //private void SetNewContent()
-        //{
-        //    customControl.CanAnimate = true;
-
-        //    var stackPanel = new StackPanel()
-        //    {
-        //        VerticalAlignment = VerticalAlignment.Top,
-        //        Background = new SolidColorBrush(Colors.Aqua),
-        //        Width = 600,
-        //        Height = 700
-        //    };
-
-        //    var content = new TextBlock()
-        //    {
-        //        VerticalAlignment = VerticalAlignment.Top,
-        //        HorizontalAlignment = HorizontalAlignment.Center,
-        //        Text = "sfsdfsdfsdfsfsdfsdfsdfsdfsdfsdfsfsdfsdfsdfsdfsfsfsdfsdfsdfsdfsdfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfsdfdfsfsf",
-        //        TextWrapping = TextWrapping.WrapWholeWords
-        //    };
-
-        //    stackPanel.Children.Add(content);
-
-        //    customControl.Content = stackPanel;
-        //}
-
-        //private void SetAnotherNewContent()
-        //{
-        //    customControl.CanAnimate = true;
-
-        //    var stackPanel = new StackPanel()
-        //    {
-        //        VerticalAlignment = VerticalAlignment.Top,
-        //        Background = new SolidColorBrush(Colors.Aqua),
-        //        Width = 600,
-        //        Height = 200
-        //    };
-
-        //    var content = new TextBlock()
-        //    {
-        //        VerticalAlignment = VerticalAlignment.Top,
-        //        HorizontalAlignment = HorizontalAlignment.Center,
-        //        Text = "sfsdfsdfsdfsfsdfsdfsdfsdfsdfsdfsfsdfsdfsdfsdfsfsfsdfsdfsdfsdfsdfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfsdfdfsfsfsfsdfsdfsdfsfsdfsdfsdfsdfsdfsdfsfsdfsdfsdfsdfsfsfsdfsdfsdfsdfsdfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfsdfdfsfsfsfsdfsdfsdfsfsdfsdfsdfsdfsdfsdfsfsdfsdfsdfsdfsfsfsdfsdfsdfsdfsdfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfsdfdfsfsfsfsdfsdfsdfsfsdfsdfsdfsdfsdfsdfsfsdfsdfsdfsdfsfsfsdfsdfsdfsdfsdfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfsdfdfsfsfsfsdfsdfsdfsfsdfsdfsdfsdfsdfsdfsfsdfsdfsdfsdfsfsfsdfsdfsdfsdfsdfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfsdfdfsfsfsfsdfsdfsdfsfsdfsdfsdfsdfsdfsdfsfsdfsdfsdfsdfsfsfsdfsdfsdfsdfsdfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfgdfsdfdfsfsf"
-        //        , TextWrapping = TextWrapping.WrapWholeWords
-        //    };
-
-        //    stackPanel.Children.Add(content);
-
-        //    customControl.Content = stackPanel;
-        //}
-
-        //private void ChangeContentSize()
-        //{
-        //    customControl.CanAnimate = true;
-
-        //    var stackPanel = customControl.Content as StackPanel;
-        //    stackPanel.Height += 100;
-        //}
     }
 }
