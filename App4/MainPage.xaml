@@ -17,7 +17,7 @@
                 Tapped="OnShowButtonTapped"/>
         <custom:RTDContentDialog x:Name="RTDContentDialog"
                                    VerticalContentAlignment="Top" HorizontalContentAlignment="Center"
-                                   Padding="0,100,0,0"
+                                   Padding="0,100,0,0" CanAnimate="True"
                                    Background="Black" BackgroundOpacity="0.6">
             <custom:RTDContentDialog.Content>
                 <StackPanel x:Name="main" Background="White" MinHeight="50" MaxHeight="2000">
