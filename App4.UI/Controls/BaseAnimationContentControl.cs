@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
@@ -57,18 +59,21 @@ namespace App4.UI.Controls
 
         private void UpdateContent(object value)
         {
-            var rootContent = this.GetTemplateChild("RootContent") as ContentPresenter;
+            var rootContent = this.GetTemplateChild("ContentPresenter") as ContentPresenter;
             if (rootContent != null)
                 rootContent.Content = value;
 
             var frameworkElement = value as FrameworkElement;
             if (frameworkElement == null) return;
 
-            frameworkElement.SizeChanged -= Content_SizeChanged;
-            frameworkElement.SizeChanged += Content_SizeChanged;
+            frameworkElement.SizeChanged -= OnSizeChanged;
+            frameworkElement.SizeChanged += OnSizeChanged;
 
-            void Content_SizeChanged(object sender, SizeChangedEventArgs e)
+            void OnSizeChanged(object sender, SizeChangedEventArgs e)
             {
+                //Debug.WriteLine(frameworkElement.DesiredSize);
+                //Debug.WriteLine(frameworkElement.RenderSize);
+
                 StartAnimation(frameworkElement, e.PreviousSize.Height, e.NewSize.Height);
             }
         }
@@ -98,6 +103,13 @@ namespace App4.UI.Controls
                 Storyboard.SetTargetProperty(animation, "Height");
 
                 Storyboard storyboard = new Storyboard();
+
+                storyboard.Completed -= OnCompleted;
+                storyboard.Completed += OnCompleted;
+
+                void OnCompleted(object sender, object e) =>
+                    frameworkElement.Height = to;
+
                 storyboard.Children.Add(animation);
                 storyboard.Begin();
 

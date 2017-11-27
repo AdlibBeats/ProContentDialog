@@ -21,7 +21,7 @@
                             Margin="{TemplateBinding Margin}">
                             <ScrollViewer>
                                 <ContentPresenter
-                                    x:Name="RootContent"
+                                    x:Name="ContentPresenter"
                                     Content="{TemplateBinding Content}"
                                     Margin="{TemplateBinding Padding}"/>
                             </ScrollViewer>
