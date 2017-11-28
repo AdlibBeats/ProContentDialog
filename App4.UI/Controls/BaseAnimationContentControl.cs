@@ -59,8 +59,8 @@ namespace App4.UI.Controls
             this.IsAnimationCompleted = false;
 
             var animation = GetDoubleAnimation(from, to, storyboardDuration);
-            var easingFunction = GetEasingFunction(EasingMode.EaseOut, 1);
 
+            var easingFunction = GetEasingFunction(EasingMode.EaseOut, 1);
             animation.EasingFunction = easingFunction;
 
             Storyboard.SetTarget(animation, _frameworkElementContent);
