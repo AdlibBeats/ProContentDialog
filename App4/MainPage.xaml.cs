@@ -18,35 +18,49 @@ namespace App4
 {
     public sealed partial class MainPage : Page
     {
+        private bool _changedView = true;
         private void OnFinishButtonTapped(object sender, TappedRoutedEventArgs e)
         {
             if (!RTDContentDialog.IsAnimationCompleted) return;
 
-            sp1.Children.Add(new TextBox()
-            {
-                PlaceholderText = "Иванов sp1",
-                Header = "Информация sp1",
-                FontSize = 16
-            });
+            //sp1.Children.Add(new TextBox()
+            //{
+            //    PlaceholderText = "Иванов sp1",
+            //    Header = "Информация sp1",
+            //    FontSize = 16
+            //});
 
-            sp2.Children.Add(new TextBox()
+            //sp2.Children.Add(new TextBox()
+            //{
+            //    PlaceholderText = "Иванов sp2",
+            //    Header = "Информация sp2",
+            //    FontSize = 16
+            //});
+
+            if (_changedView)
             {
-                PlaceholderText = "Иванов sp2",
-                Header = "Информация sp2",
-                FontSize = 16
-            });
+                sp1.Visibility = Visibility.Collapsed;
+                sp2.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                sp2.Visibility = Visibility.Collapsed;
+                sp1.Visibility = Visibility.Visible;
+            }
+
+            _changedView = !_changedView;
 
             //RTDContentDialog.Content = new Grid { Width = 200, Height = 300, Background = new SolidColorBrush(Colors.AliceBlue) };
         }
 
         private void OnBackwardButtonTapped(object sender, TappedRoutedEventArgs e)
         {
-            if (!RTDContentDialog.IsAnimationCompleted) return;
+            //if (!RTDContentDialog.IsAnimationCompleted) return;
 
-            sp1.Children.Remove(sp1.Children.LastOrDefault());
-            sp2.Children.Remove(sp2.Children.LastOrDefault());
+            //sp1.Children.Remove(sp1.Children.LastOrDefault());
+            //sp2.Children.Remove(sp2.Children.LastOrDefault());
 
-            main.Height -= sp1.Height;
+            //main.Height -= sp1.Height;
         }
 
         private void OnShowButtonTapped(object sender, TappedRoutedEventArgs e)

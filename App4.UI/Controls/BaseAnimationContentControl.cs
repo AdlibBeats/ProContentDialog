@@ -26,20 +26,6 @@ namespace App4.UI.Controls
             UpdateContent(this.Content);
         }
 
-        private void UpdateCanAnimate(bool value)
-        {
-            _frameworkElementContent = this.Content as FrameworkElement;
-            if (_frameworkElementContent == null) return;
-
-            _frameworkElementContent.SizeChanged -= OnSizeChanged;
-
-            if (value)
-                _frameworkElementContent.SizeChanged += OnSizeChanged;
-
-            void OnSizeChanged(object sender, SizeChangedEventArgs e) =>
-                StartAnimation(_frameworkElementContent, e.PreviousSize.Height, e.NewSize.Height, this.StoryboardDuration, this.StoryboardPath);
-        }
-
         private void UpdateContent(object value)
         {
             var contentPresenter = this.GetTemplateChild("ContentPresenter") as ContentPresenter;
@@ -49,38 +35,58 @@ namespace App4.UI.Controls
 
             UpdateCanAnimate(this.CanAnimate);
         }
-        
-        private void StartAnimation(FrameworkElement frameworkElement, double from, double to, Duration storyboardDuration, string storyboardPath)
+
+        private void UpdateCanAnimate(bool value)
         {
-            if (!this.IsAnimationCompleted) return;
+            _frameworkElementContent = this.Content as FrameworkElement;
+            if (_frameworkElementContent == null) return;
+
+            _frameworkElementContent.SizeChanged -= OnSizeChanged;
+
+            if (value)
+                _frameworkElementContent.SizeChanged += OnSizeChanged;
+        }
+
+        private void OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            StartAnimation(e.PreviousSize.Height, e.NewSize.Height, this.StoryboardDuration, this.StoryboardPath);
+        }
+        
+        private void StartAnimation(double from, double to, Duration storyboardDuration, string storyboardPath)
+        {
+            if (!this.IsAnimationCompleted || _frameworkElementContent == null) return;
 
             this.IsAnimationCompleted = false;
 
-            var doubleAnimation = GetDoubleAnimation(from, to, storyboardDuration);
+            var animation = GetDoubleAnimation(from, to, storyboardDuration);
             var easingFunction = GetEasingFunction(EasingMode.EaseOut, 2);
 
-            doubleAnimation.EasingFunction = easingFunction;
+            animation.EasingFunction = easingFunction;
 
-            Storyboard.SetTarget(doubleAnimation, frameworkElement);
-            Storyboard.SetTargetProperty(doubleAnimation, storyboardPath);
+            Storyboard.SetTarget(animation, _frameworkElementContent);
+            Storyboard.SetTargetProperty(animation, storyboardPath);
 
             Storyboard storyboard = new Storyboard();
+
+            storyboard.FillBehavior = FillBehavior.Stop;
 
             storyboard.Completed -= OnCompleted;
             storyboard.Completed += OnCompleted;
 
-            void OnCompleted(object sender, object e)
-            {
-                this.IsAnimationCompleted = true;
-                AnimationCompleted?.Invoke(this, new RoutedEventArgs());
-            };
-
-            storyboard.Children.Add(doubleAnimation);
+            storyboard.Children.Add(animation);
             storyboard.Begin();
+        }
+
+        private void OnCompleted(object sender, object e)
+        {
+            this.IsAnimationCompleted = true;
+
+            AnimationCompleted?.Invoke(this, new RoutedEventArgs());
         }
 
         private DoubleAnimation GetDoubleAnimation(double from, double to, Duration storyboardDuration) => new DoubleAnimation
         {
+            FillBehavior = FillBehavior.Stop,
             Duration = storyboardDuration,
             From = from,
             To = to,
