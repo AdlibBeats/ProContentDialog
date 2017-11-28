@@ -37,15 +37,24 @@ namespace App4
             //    FontSize = 16
             //});
 
+            //if (_changedView)
+            //{
+            //    sp1.Visibility = Visibility.Collapsed;
+            //    sp2.Visibility = Visibility.Visible;
+            //}
+            //else
+            //{
+            //    sp2.Visibility = Visibility.Collapsed;
+            //    sp1.Visibility = Visibility.Visible;
+            //}
+
             if (_changedView)
             {
-                sp1.Visibility = Visibility.Collapsed;
-                sp2.Visibility = Visibility.Visible;
+                VisualStateManager.GoToState(this, "StateA", true);
             }
             else
             {
-                sp2.Visibility = Visibility.Collapsed;
-                sp1.Visibility = Visibility.Visible;
+                VisualStateManager.GoToState(this, "StateB", true);
             }
 
             _changedView = !_changedView;
@@ -71,6 +80,7 @@ namespace App4
         public MainPage()
         {
             this.InitializeComponent();
+            VisualStateManager.GoToState(this, "DefaultState", true);
         }
     }
 }

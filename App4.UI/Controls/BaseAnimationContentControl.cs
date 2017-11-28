@@ -59,7 +59,7 @@ namespace App4.UI.Controls
             this.IsAnimationCompleted = false;
 
             var animation = GetDoubleAnimation(from, to, storyboardDuration);
-            var easingFunction = GetEasingFunction(EasingMode.EaseOut, 2);
+            var easingFunction = GetEasingFunction(EasingMode.EaseOut, 1);
 
             animation.EasingFunction = easingFunction;
 
@@ -94,10 +94,9 @@ namespace App4.UI.Controls
             AutoReverse = false
         };
 
-        private ElasticEase GetEasingFunction(EasingMode easingMode, int oscillations) => new ElasticEase
+        private EasingFunctionBase GetEasingFunction(EasingMode easingMode, int oscillations) => new ExponentialEase()
         {
-            EasingMode = EasingMode.EaseOut,
-            Oscillations = 2
+            EasingMode = EasingMode.EaseIn, Exponent = 0.5
         };
 
         public object Content

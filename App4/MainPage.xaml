@@ -8,6 +8,44 @@
     mc:Ignorable="d">
 
     <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="States">
+                <VisualState x:Name="DefaultState">
+                    <Storyboard>
+                        <FadeOutThemeAnimation TargetName="sp1"/>
+                        <FadeOutThemeAnimation TargetName="sp2"/>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="StateA">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="sp1"
+                                                       Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="sp2"
+                                                       Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <FadeInThemeAnimation TargetName="sp1" BeginTime="0:0:0.15"/>
+                        <FadeOutThemeAnimation TargetName="sp2" BeginTime="0:0:0.15"/>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="StateB">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="sp2"
+                                                       Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="sp1"
+                                                       Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <FadeInThemeAnimation TargetName="sp2" BeginTime="0:0:0.15"/>
+                        <FadeOutThemeAnimation TargetName="sp1" BeginTime="0:0:0.15"/>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
         <Grid.Background>
             <ImageBrush Stretch="UniformToFill" ImageSource="Assets/abc.png"/>
         </Grid.Background>
@@ -17,7 +55,7 @@
                 Tapped="OnShowButtonTapped"/>
         <custom:RTDContentDialog x:Name="RTDContentDialog"
                                    VerticalContentAlignment="Top" HorizontalContentAlignment="Center"
-                                   Padding="0,100,0,0"
+                                   Padding="0,100,0,0" StoryboardDuration="0:0:0.15"
                                    Background="Black" BackgroundOpacity="0.6">
             <custom:RTDContentDialog.Content>
                 <StackPanel x:Name="main" Background="White" MinHeight="50" MaxHeight="2000">
@@ -35,7 +73,7 @@
                             <TextBox PlaceholderText="Константинович" Header="Отчество"
                                             FontSize="16"/>
                         </StackPanel>
-                        <StackPanel x:Name="sp2" Margin="10,0" Width="200" Orientation="Vertical" Visibility="Collapsed">
+                        <StackPanel x:Name="sp2" Margin="10,0" Width="200" Orientation="Vertical">
                             <TextBox PlaceholderText="8 956 476 89 67" Header="Телефон"
                                             FontSize="16"/>
                             <TextBox PlaceholderText="example@email.ru" Header="Email"
@@ -48,7 +86,7 @@
                                             FontSize="16"/>
                         </StackPanel>
                     </StackPanel>
-                    <StackPanel Height="100" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <StackPanel Height="100" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,20">
                         <Button
                             VerticalAlignment="Bottom"
                             Content="Назад" Width="120" Height="32"
