@@ -55,18 +55,16 @@ namespace App4
 
             _changedView = !_changedView;
 
-            //RTDContentDialog.Content = new Grid { Width = 200, Height = 300, Background = new SolidColorBrush(Colors.AliceBlue) };
+            //RTDContentDialog.Content = new Grid { Width = 460, Height = 300, Background = new SolidColorBrush(Colors.AliceBlue) };
         }
 
         private bool _changedDuration = true;
         private void OnBackwardButtonTapped(object sender, TappedRoutedEventArgs e)
         {
-            //if (!RTDContentDialog.IsAnimationCompleted) return;
+            if (!RTDContentDialog.IsAnimationCompleted) return;
 
             //sp1.Children.Remove(sp1.Children.LastOrDefault());
             //sp2.Children.Remove(sp2.Children.LastOrDefault());
-
-            //main.Height -= sp1.Height;
 
             if (_changedDuration)
                 RTDContentDialog.StoryboardDuration = new Duration(TimeSpan.FromSeconds(1));

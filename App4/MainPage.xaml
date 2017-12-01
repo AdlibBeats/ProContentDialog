@@ -61,7 +61,7 @@
                 <CircleEase EasingMode="EaseOut"/>
             </custom:RTDContentDialog.EasingFunction>
             <custom:RTDContentDialog.Content>
-                <StackPanel x:Name="main" Background="White" MinHeight="50" MaxHeight="2000">
+                <StackPanel x:Name="main" Background="White" Width="460" MinHeight="50" MaxHeight="2000">
                     <TextBlock Margin="10,0" FontSize="13" Foreground="#949494">
                     <Run Text="Все поля, отмеченные знаком «"/>
                     <Run Text="*" FontSize="16" Foreground="#9F0012"/>
