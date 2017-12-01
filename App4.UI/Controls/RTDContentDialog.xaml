@@ -6,6 +6,9 @@
     <Style TargetType="local:RTDContentDialog">
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="StoryboardDuration" Value="0:0:0.15"/>
+        <Setter Property="EasingFunction" Value="{x:Null}"/>
+        <Setter Property="CanAnimate" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:RTDContentDialog">
@@ -58,10 +61,15 @@
                                   Background="{TemplateBinding Background}"
                                   Opacity="{TemplateBinding BackgroundOpacity}"
                                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-                            <local:RTDContentPresenter x:Name="ContentPresenter" Content="{TemplateBinding Content}"
-                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              Margin="{TemplateBinding Padding}"/>
+                            <local:RTDContentPresenter
+                                x:Name="ContentPresenter"
+                                Content="{TemplateBinding Content}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Margin="{TemplateBinding Padding}"
+                                StoryboardDuration="{TemplateBinding StoryboardDuration}"
+                                EasingFunction="{TemplateBinding EasingFunction}"
+                                CanAnimate="{TemplateBinding CanAnimate}"/>
                         </Grid>
                     </Grid>
                 </ControlTemplate>

@@ -23,7 +23,7 @@ namespace App4.UI.Controls
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            return StartAnimation(this.ActualHeight, finalSize);
+            return this.CanAnimate ? StartAnimation(this.ActualHeight, finalSize) : base.ArrangeOverride(finalSize);
         }
 
         private Size StartAnimation(double from, Size finalSize)
@@ -34,11 +34,7 @@ namespace App4.UI.Controls
 
             AnimationStarted?.Invoke(this, new RoutedEventArgs());
 
-            Timeline animation = null;
-            if (this.CanAnimate)
-                animation = GetDoubleAnimation(from, finalSize.Height, this.StoryboardDuration, this.EasingFunction);
-            else
-                animation = GetDoubleAnimation(from, finalSize.Height, new Duration(TimeSpan.FromSeconds(0.001)));
+            var animation = GetDoubleAnimation(from, finalSize.Height, this.StoryboardDuration, this.EasingFunction);
 
             Storyboard.SetTarget(animation, this);
             Storyboard.SetTargetProperty(animation, "Height");
