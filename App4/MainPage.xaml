@@ -57,6 +57,9 @@
                                    VerticalContentAlignment="Top" HorizontalContentAlignment="Center"
                                    Padding="0,100,0,0" StoryboardDuration="0:0:0.15"
                                    Background="Black" BackgroundOpacity="0.6">
+            <custom:RTDContentDialog.EasingFunction>
+                <ExponentialEase Exponent="0.5" EasingMode="EaseOut"/>
+            </custom:RTDContentDialog.EasingFunction>
             <custom:RTDContentDialog.Content>
                 <StackPanel x:Name="main" Background="White" MinHeight="50" MaxHeight="2000">
                     <TextBlock Margin="10,0" FontSize="13" Foreground="#949494">

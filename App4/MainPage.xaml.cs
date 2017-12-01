@@ -49,19 +49,16 @@ namespace App4
             //}
 
             if (_changedView)
-            {
                 VisualStateManager.GoToState(this, "StateA", true);
-            }
             else
-            {
                 VisualStateManager.GoToState(this, "StateB", true);
-            }
 
             _changedView = !_changedView;
 
             //RTDContentDialog.Content = new Grid { Width = 200, Height = 300, Background = new SolidColorBrush(Colors.AliceBlue) };
         }
 
+        private bool _changedDuration = true;
         private void OnBackwardButtonTapped(object sender, TappedRoutedEventArgs e)
         {
             //if (!RTDContentDialog.IsAnimationCompleted) return;
@@ -70,6 +67,13 @@ namespace App4
             //sp2.Children.Remove(sp2.Children.LastOrDefault());
 
             //main.Height -= sp1.Height;
+
+            if (_changedDuration)
+                RTDContentDialog.StoryboardDuration = new Duration(TimeSpan.FromSeconds(1));
+            else
+                RTDContentDialog.StoryboardDuration = new Duration(TimeSpan.FromSeconds(0.15));
+
+            _changedDuration = !_changedDuration;
         }
 
         private void OnShowButtonTapped(object sender, TappedRoutedEventArgs e)

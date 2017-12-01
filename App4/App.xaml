@@ -7,7 +7,8 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="ms-appx:///App4.UI/Controls/BaseAnimationContentControl.xaml"/>
+                <ResourceDictionary Source="ms-appx:///App4.UI/Controls/RTDContentPresenter.xaml"/>
+                <ResourceDictionary Source="ms-appx:///App4.UI/Controls/RTDAnimationContentControl.xaml"/>
                 <ResourceDictionary Source="ms-appx:///App4.UI/Controls/RTDContentDialog.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

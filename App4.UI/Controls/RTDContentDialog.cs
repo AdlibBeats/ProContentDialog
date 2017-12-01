@@ -4,7 +4,7 @@ using Windows.UI.Xaml.Input;
 
 namespace App4.UI.Controls
 {
-    public sealed class RTDContentDialog : BaseAnimationContentControl
+    public sealed class RTDContentDialog : RTDAnimationContentControl
     {
         private Grid _layoutRoot;
         private Grid _layoutBackground;
