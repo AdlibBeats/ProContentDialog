@@ -82,7 +82,7 @@ namespace App4.UI.Controls
         }
 
         public static readonly DependencyProperty CanAnimateProperty =
-            DependencyProperty.Register("CanAnimate", typeof(bool), typeof(RTDContentPresenter), new PropertyMetadata(true));
+            DependencyProperty.Register("CanAnimate", typeof(bool), typeof(RTDContentPresenter), new PropertyMetadata(false));
 
         public Duration StoryboardDuration
         {

@@ -23,31 +23,9 @@ namespace App4
         {
             if (!RTDContentDialog.IsAnimationCompleted) return;
 
-            //sp1.Children.Add(new TextBox()
-            //{
-            //    PlaceholderText = "Иванов sp1",
-            //    Header = "Информация sp1",
-            //    FontSize = 16
-            //});
+            RTDContentDialog.CanAnimate = true;
 
-            //sp2.Children.Add(new TextBox()
-            //{
-            //    PlaceholderText = "Иванов sp2",
-            //    Header = "Информация sp2",
-            //    FontSize = 16
-            //});
-
-            //if (_changedView)
-            //{
-            //    sp1.Visibility = Visibility.Collapsed;
-            //    sp2.Visibility = Visibility.Visible;
-            //}
-            //else
-            //{
-            //    sp2.Visibility = Visibility.Collapsed;
-            //    sp1.Visibility = Visibility.Visible;
-            //}
-
+            //Can comment this
             if (_changedView)
                 VisualStateManager.GoToState(this, "StateA", true);
             else
@@ -55,7 +33,8 @@ namespace App4
 
             _changedView = !_changedView;
 
-            //RTDContentDialog.Content = new Grid { Width = 460, Height = 300, Background = new SolidColorBrush(Colors.AliceBlue) };
+            //Can comment this
+            //RTDContentDialog.Content = new Grid { Width = 460, Height = 100, Background = new SolidColorBrush(Colors.Red) };
         }
 
         private bool _changedDuration = true;
@@ -82,7 +61,14 @@ namespace App4
         public MainPage()
         {
             this.InitializeComponent();
+
             VisualStateManager.GoToState(this, "DefaultState", true);
+
+            if (RTDContentDialog != null)
+                RTDContentDialog.AnimationCompleted += OnAnimationCompleted;
+
+            void OnAnimationCompleted(object sender, RoutedEventArgs e) =>
+                RTDContentDialog.CanAnimate = false;
         }
     }
 }

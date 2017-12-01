@@ -17,7 +17,7 @@
             <Setter Property="VerticalContentAlignment" Value="Stretch"/>
             <Setter Property="StoryboardDuration" Value="0:0:0.15"/>
             <Setter Property="EasingFunction" Value="{x:Null}"/>
-            <Setter Property="CanAnimate" Value="True"/>
+            <Setter Property="CanAnimate" Value="False"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="local:RTDContentPresenter">

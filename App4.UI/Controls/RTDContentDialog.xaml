@@ -8,7 +8,7 @@
         <Setter Property="VerticalContentAlignment" Value="Stretch"/>
         <Setter Property="StoryboardDuration" Value="0:0:0.15"/>
         <Setter Property="EasingFunction" Value="{x:Null}"/>
-        <Setter Property="CanAnimate" Value="True"/>
+        <Setter Property="CanAnimate" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:RTDContentDialog">
@@ -57,7 +57,7 @@
                         <Grid x:Name="LayoutRoot"
                               BorderBrush="{TemplateBinding BorderBrush}"
                               BorderThickness="{TemplateBinding BorderThickness}">
-                            <Grid x:Name="LayoutBackground"
+                            <Border x:Name="LayoutBackground"
                                   Background="{TemplateBinding Background}"
                                   Opacity="{TemplateBinding BackgroundOpacity}"
                                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>

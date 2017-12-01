@@ -106,7 +106,6 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Controls\RTDAnimationContentControl.cs" />
     <Compile Include="Controls\RTDContentDialog.cs" />
     <Compile Include="Controls\RTDContentPresenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -118,11 +117,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\RTDAnimationContentControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Page>
     <Page Include="Controls\RTDContentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
