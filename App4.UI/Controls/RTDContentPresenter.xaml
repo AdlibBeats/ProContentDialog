@@ -18,6 +18,7 @@
             <Setter Property="StoryboardDuration" Value="0:0:0.15"/>
             <Setter Property="EasingFunction" Value="{x:Null}"/>
             <Setter Property="CanAnimate" Value="False"/>
+            <Setter Property="AnimationType" Value="FullSize"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="local:RTDContentPresenter">

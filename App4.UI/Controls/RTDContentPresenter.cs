@@ -13,6 +13,8 @@ namespace App4.UI.Controls
 {
     public class RTDContentPresenter : ContentControl
     {
+        private Size _finalSize;
+
         public event RoutedEventHandler AnimationCompleted;
         public event RoutedEventHandler AnimationStarted;
 
@@ -23,29 +25,52 @@ namespace App4.UI.Controls
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            return this.CanAnimate ? StartAnimation(this.ActualHeight, finalSize) : base.ArrangeOverride(finalSize);
+            _finalSize = finalSize;
+
+            return this.CanAnimate ? StartAnimation() : base.ArrangeOverride(_finalSize);
         }
 
-        private Size StartAnimation(double from, Size finalSize)
+        private Size StartAnimation()
         {
-            if (!this.IsAnimationCompleted) return base.ArrangeOverride(finalSize);
+            if (!this.IsAnimationCompleted) return base.ArrangeOverride(_finalSize);
 
             this.IsAnimationCompleted = false;
 
             AnimationStarted?.Invoke(this, new RoutedEventArgs());
 
-            var animation = GetDoubleAnimation(from, finalSize.Height, this.StoryboardDuration, this.EasingFunction);
-
-            Storyboard.SetTarget(animation, this);
-            Storyboard.SetTargetProperty(animation, "Height");
-
             var storyboard = new Storyboard();
             storyboard.Completed += OnCompleted;
 
-            storyboard.Children.Add(animation);
+            foreach (var animation in GetAnimations().Where(i => i != null))
+                storyboard.Children.Add(animation);
             storyboard.Begin();
 
-            return finalSize;
+            return _finalSize;
+        }
+
+        private Timeline[] GetAnimations()
+        {
+            Timeline[] timeLines = new Timeline[2];
+            switch (this.AnimationType)
+            {
+                case RTDAnimationType.FullSize:
+                    {
+                        timeLines[0] = GetDoubleAnimation(true, this.StoryboardDuration, this.EasingFunction);
+                        timeLines[1] = GetDoubleAnimation(false, this.StoryboardDuration, this.EasingFunction);
+                        break;
+                    }
+                case RTDAnimationType.OnlyHeight:
+                    {
+                        timeLines[0] = GetDoubleAnimation(true, this.StoryboardDuration, this.EasingFunction);
+                        break;
+                    }
+                case RTDAnimationType.OnlyWidth:
+                    {
+                        timeLines[0] = GetDoubleAnimation(false, this.StoryboardDuration, this.EasingFunction);
+                        break;
+                    }
+            }
+            return timeLines;
         }
 
         private void OnCompleted(object sender, object e)
@@ -55,16 +80,24 @@ namespace App4.UI.Controls
             AnimationCompleted?.Invoke(this, new RoutedEventArgs());
         }
 
-        private DoubleAnimation GetDoubleAnimation(double from, double to, Duration duration, EasingFunctionBase easingFunction = null) => new DoubleAnimation
+        private DoubleAnimation GetDoubleAnimation(bool animationType, Duration duration, EasingFunctionBase easingFunction = null)
         {
-            FillBehavior = FillBehavior.Stop,
-            Duration = duration,
-            From = from,
-            To = to,
-            EnableDependentAnimation = true,
-            AutoReverse = false,
-            EasingFunction = easingFunction
-        };
+            var animation = new DoubleAnimation
+            {
+                FillBehavior = FillBehavior.Stop,
+                Duration = duration,
+                From = animationType ? this.ActualHeight : this.ActualWidth,
+                To = animationType ? _finalSize.Height : _finalSize.Width,
+                EnableDependentAnimation = true,
+                AutoReverse = false,
+                EasingFunction = easingFunction
+            };
+
+            Storyboard.SetTarget(animation, this);
+            Storyboard.SetTargetProperty(animation, animationType ? "Height" : "Width");
+
+            return animation;
+        }
 
         public bool IsAnimationCompleted
         {
@@ -101,5 +134,14 @@ namespace App4.UI.Controls
 
         public static readonly DependencyProperty EasingFunctionProperty =
             DependencyProperty.Register("EasingFunction", typeof(EasingFunctionBase), typeof(RTDContentPresenter), new PropertyMetadata(null));
+
+        public RTDAnimationType AnimationType
+        {
+            get => (RTDAnimationType)GetValue(AnimationTypeProperty);
+            set => SetValue(AnimationTypeProperty, value);
+        }
+
+        public static readonly DependencyProperty AnimationTypeProperty =
+            DependencyProperty.Register("AnimationType", typeof(RTDAnimationType), typeof(RTDContentPresenter), new PropertyMetadata(RTDAnimationType.FullSize));
     }
 }

@@ -32,10 +32,10 @@ namespace App4.UI.Controls
             _contentPresenter = this.GetTemplateChild("ContentPresenter") as RTDContentPresenter;
             if (_contentPresenter != null)
             {
-
                 _contentPresenter.StoryboardDuration = this.StoryboardDuration;
                 _contentPresenter.EasingFunction = this.EasingFunction;
                 _contentPresenter.CanAnimate = this.CanAnimate;
+                _contentPresenter.AnimationType = this.AnimationType;
 
                 _contentPresenter.AnimationStarted += OnAnimationStarted;
                 _contentPresenter.AnimationCompleted += OnAnimationCompleted;
@@ -70,6 +70,12 @@ namespace App4.UI.Controls
             _contentPresenter.CanAnimate = this.CanAnimate;
         }
 
+        private void UpdateAnimationType()
+        {
+            if (_contentPresenter == null) return;
+            _contentPresenter.AnimationType = this.AnimationType;
+        }
+
         private void OnAnimationStarted(object sender, RoutedEventArgs e)
         {
             this.IsAnimationCompleted = _contentPresenter.IsAnimationCompleted;
@@ -89,30 +95,6 @@ namespace App4.UI.Controls
             Hide();
         }
 
-        public bool FullSizeDesire
-        {
-            get => (bool)GetValue(FullSizeDesireProperty);
-            set => SetValue(FullSizeDesireProperty, value);
-        }
-
-        public static readonly DependencyProperty FullSizeDesireProperty =
-            DependencyProperty.Register(nameof(FullSizeDesire), typeof(bool), typeof(RTDContentDialog), new PropertyMetadata(false, OnFullSizeDesireChanged));
-
-        public double BackgroundOpacity
-        {
-            get => (double)GetValue(BackgroundOpacityProperty);
-            set => SetValue(BackgroundOpacityProperty, value);
-        }
-
-        public static readonly DependencyProperty BackgroundOpacityProperty =
-            DependencyProperty.Register(nameof(BackgroundOpacity), typeof(double), typeof(RTDContentDialog), new PropertyMetadata(0.0));
-
-        private static void OnFullSizeDesireChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (!(d is RTDContentDialog contentDialog)) return;
-            contentDialog.UpdateSizeState();
-        }
-
         private void UpdateSizeState()
         {
             VisualStateManager.GoToState(this, FullSizeDesire ? "FullSizeState" : "NormalState", true);
@@ -126,6 +108,32 @@ namespace App4.UI.Controls
         public void Hide()
         {
             VisualStateManager.GoToState(this, "CollapsedState", true);
+        }
+
+        public double BackgroundOpacity
+        {
+            get => (double)GetValue(BackgroundOpacityProperty);
+            set => SetValue(BackgroundOpacityProperty, value);
+        }
+
+        public static readonly DependencyProperty BackgroundOpacityProperty =
+            DependencyProperty.Register(nameof(BackgroundOpacity), typeof(double), typeof(RTDContentDialog), new PropertyMetadata(0.0));
+
+        public bool FullSizeDesire
+        {
+            get => (bool)GetValue(FullSizeDesireProperty);
+            set => SetValue(FullSizeDesireProperty, value);
+        }
+
+        public static readonly DependencyProperty FullSizeDesireProperty =
+            DependencyProperty.Register(nameof(FullSizeDesire), typeof(bool), typeof(RTDContentDialog), new PropertyMetadata(false, OnFullSizeDesireChanged));
+
+        private static void OnFullSizeDesireChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var contentDialog = d as RTDContentDialog;
+            if (contentDialog == null) return;
+
+            contentDialog.UpdateSizeState();
         }
 
         public bool IsAnimationCompleted
@@ -148,10 +156,10 @@ namespace App4.UI.Controls
 
         private static void OnCanAnimateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var contentControl = d as RTDContentDialog;
-            if (contentControl == null) return;
+            var contentDialog = d as RTDContentDialog;
+            if (contentDialog == null) return;
 
-            contentControl.UpdateCanAnimate();
+            contentDialog.UpdateCanAnimate();
         }
 
         public Duration StoryboardDuration
@@ -165,10 +173,10 @@ namespace App4.UI.Controls
 
         private static void OnStoryboardDurationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var contentControl = d as RTDContentDialog;
-            if (contentControl == null) return;
+            var contentDialog = d as RTDContentDialog;
+            if (contentDialog == null) return;
 
-            contentControl.UpdateStoryboardDuration();
+            contentDialog.UpdateStoryboardDuration();
         }
 
         public EasingFunctionBase EasingFunction
@@ -182,10 +190,27 @@ namespace App4.UI.Controls
 
         private static void OnEasingFunctionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var contentControl = d as RTDContentDialog;
-            if (contentControl == null) return;
+            var contentDialog = d as RTDContentDialog;
+            if (contentDialog == null) return;
 
-            contentControl.UpdateEasingFunction();
+            contentDialog.UpdateEasingFunction();
+        }
+
+        public RTDAnimationType AnimationType
+        {
+            get => (RTDAnimationType)GetValue(AnimationTypeProperty);
+            set => SetValue(AnimationTypeProperty, value);
+        }
+
+        public static readonly DependencyProperty AnimationTypeProperty =
+            DependencyProperty.Register("AnimationType", typeof(RTDAnimationType), typeof(RTDContentDialog), new PropertyMetadata(RTDAnimationType.FullSize, OnAnimationTypeChanged));
+
+        private static void OnAnimationTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var contentDialog = d as RTDContentDialog;
+            if (contentDialog == null) return;
+
+            contentDialog.UpdateAnimationType();
         }
     }
 }
