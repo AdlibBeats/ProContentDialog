@@ -23,7 +23,7 @@ namespace App4.UI.Controls
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            return this.CanAnimate ? StartAnimation(this.ActualHeight, finalSize) : finalSize;
+            return StartAnimation(this.ActualHeight, finalSize);
         }
 
         private Size StartAnimation(double from, Size finalSize)
@@ -34,10 +34,11 @@ namespace App4.UI.Controls
 
             AnimationStarted?.Invoke(this, new RoutedEventArgs());
 
-            var animation = GetDoubleAnimation(from, finalSize.Height, this.StoryboardDuration);
-
-            //var easingFunction = GetEasingFunction(EasingMode.EaseOut, 1);
-            animation.EasingFunction = this.EasingFunction;
+            Timeline animation = null;
+            if (this.CanAnimate)
+                animation = GetDoubleAnimation(from, finalSize.Height, this.StoryboardDuration, this.EasingFunction);
+            else
+                animation = GetDoubleAnimation(from, finalSize.Height, new Duration(TimeSpan.FromSeconds(0.001)));
 
             Storyboard.SetTarget(animation, this);
             Storyboard.SetTargetProperty(animation, "Height");
@@ -60,14 +61,15 @@ namespace App4.UI.Controls
             AnimationCompleted?.Invoke(this, new RoutedEventArgs());
         }
 
-        private DoubleAnimation GetDoubleAnimation(double from, double to, Duration storyboardDuration) => new DoubleAnimation
+        private DoubleAnimation GetDoubleAnimation(double from, double to, Duration duration, EasingFunctionBase easingFunction = null) => new DoubleAnimation
         {
             FillBehavior = FillBehavior.Stop,
-            Duration = storyboardDuration,
+            Duration = duration,
             From = from,
             To = to,
             EnableDependentAnimation = true,
-            AutoReverse = false
+            AutoReverse = false,
+            EasingFunction = easingFunction
         };
 
         public bool IsAnimationCompleted

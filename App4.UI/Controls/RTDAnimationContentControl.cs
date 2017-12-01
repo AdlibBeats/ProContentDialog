@@ -27,7 +27,7 @@ namespace App4.UI.Controls
 
             _contentPresenter = this.GetTemplateChild("ContentPresenter") as RTDContentPresenter;
             if (_contentPresenter == null) return;
-
+            
             _contentPresenter.StoryboardDuration = this.StoryboardDuration;
             _contentPresenter.EasingFunction = this.EasingFunction;
             _contentPresenter.CanAnimate = this.CanAnimate;
@@ -59,14 +59,14 @@ namespace App4.UI.Controls
 
         private void OnAnimationStarted(object sender, RoutedEventArgs e)
         {
-            this.CanAnimate = _contentPresenter.CanAnimate;
+            this.IsAnimationCompleted = _contentPresenter.IsAnimationCompleted;
 
             AnimationStarted?.Invoke(sender, e);
         }
 
         private void OnAnimationCompleted(object sender, RoutedEventArgs e)
         {
-            this.CanAnimate = _contentPresenter.CanAnimate;
+            this.IsAnimationCompleted = _contentPresenter.IsAnimationCompleted;
 
             AnimationCompleted?.Invoke(sender, e);
         }
