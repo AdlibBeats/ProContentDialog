@@ -39,9 +39,7 @@ namespace App4.UI.Controls
             Storyboard.SetTarget(animation, this);
             Storyboard.SetTargetProperty(animation, "Height");
 
-            Storyboard storyboard = new Storyboard();
-
-            storyboard.Completed -= OnCompleted;
+            var storyboard = new Storyboard();
             storyboard.Completed += OnCompleted;
 
             storyboard.Children.Add(animation);
