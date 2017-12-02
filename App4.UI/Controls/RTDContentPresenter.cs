@@ -52,7 +52,7 @@ namespace App4.UI.Controls
             _storyboard = new Storyboard();
             _storyboard.Completed += OnCompleted;
 
-            var animations = GetAnimations();
+            var animations = GetDoubleAnimations();
             foreach (var animation in animations)
                 _storyboard.Children.Add(animation);
             _storyboard.Begin();
@@ -60,7 +60,7 @@ namespace App4.UI.Controls
             return finalSize;
         }
 
-        private IEnumerable<Timeline> GetAnimations()
+        private IEnumerable<Timeline> GetDoubleAnimations()
         {
             if (this.AnimationType == RTDAnimationType.FullSize)
                 return new Timeline[]
