@@ -52,7 +52,8 @@ namespace App4.UI.Controls
             _storyboard = new Storyboard();
             _storyboard.Completed += OnCompleted;
 
-            foreach (var animation in GetAnimations().Where(i => i != null))
+            var animations = GetAnimations();
+            foreach (var animation in animations)
                 _storyboard.Children.Add(animation);
             _storyboard.Begin();
 
