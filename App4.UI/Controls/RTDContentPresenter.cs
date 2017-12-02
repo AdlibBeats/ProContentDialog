@@ -13,7 +13,8 @@ namespace App4.UI.Controls
 {
     public class RTDContentPresenter : ContentControl
     {
-        private Size _finalSize;
+        private Storyboard _storyboard = new Storyboard();
+        private Size _animationSize;
 
         public event RoutedEventHandler AnimationCompleted;
         public event RoutedEventHandler AnimationStarted;
@@ -22,55 +23,54 @@ namespace App4.UI.Controls
         {
             this.DefaultStyleKey = typeof(RTDContentPresenter);
         }
-
+        
         protected override Size ArrangeOverride(Size finalSize)
         {
-            _finalSize = finalSize;
+            var arrangeOverride = this.CanAnimate ? StartAnimation(finalSize) : finalSize;
 
-            return this.CanAnimate ? StartAnimation() : base.ArrangeOverride(_finalSize);
+            return base.ArrangeOverride(arrangeOverride);
         }
 
-        private Size StartAnimation()
+        private Size StartAnimation(Size finalSize)
         {
-            if (!this.IsAnimationCompleted) return base.ArrangeOverride(_finalSize);
+            if (!this.IsAnimationCompleted)
+                return finalSize;
+
+            _animationSize = finalSize;
+
+            if (!double.IsInfinity(this.ActualHeight) && !double.IsNaN(this.ActualHeight))
+                finalSize.Height = this.ActualHeight;
+            if (!double.IsInfinity(this.ActualWidth) && !double.IsNaN(this.ActualWidth))
+                finalSize.Width = this.ActualWidth;
 
             this.IsAnimationCompleted = false;
 
             AnimationStarted?.Invoke(this, new RoutedEventArgs());
 
-            var storyboard = new Storyboard();
-            storyboard.Completed += OnCompleted;
+            _storyboard.Completed -= OnCompleted;
+
+            _storyboard = new Storyboard();
+            _storyboard.Completed += OnCompleted;
 
             foreach (var animation in GetAnimations().Where(i => i != null))
-                storyboard.Children.Add(animation);
-            storyboard.Begin();
+                _storyboard.Children.Add(animation);
+            _storyboard.Begin();
 
-            return _finalSize;
+            return finalSize;
         }
 
-        private Timeline[] GetAnimations()
+        private IEnumerable<Timeline> GetAnimations()
         {
-            Timeline[] timeLines = new Timeline[2];
-            switch (this.AnimationType)
-            {
-                case RTDAnimationType.FullSize:
-                    {
-                        timeLines[0] = GetDoubleAnimation(true, this.StoryboardDuration, this.EasingFunction);
-                        timeLines[1] = GetDoubleAnimation(false, this.StoryboardDuration, this.EasingFunction);
-                        break;
-                    }
-                case RTDAnimationType.OnlyHeight:
-                    {
-                        timeLines[0] = GetDoubleAnimation(true, this.StoryboardDuration, this.EasingFunction);
-                        break;
-                    }
-                case RTDAnimationType.OnlyWidth:
-                    {
-                        timeLines[0] = GetDoubleAnimation(false, this.StoryboardDuration, this.EasingFunction);
-                        break;
-                    }
-            }
-            return timeLines;
+            if (this.AnimationType == RTDAnimationType.FullSize)
+                return new Timeline[]
+                {
+                    GetDoubleAnimation(true),
+                    GetDoubleAnimation(false)
+                };
+            else if (this.AnimationType == RTDAnimationType.OnlyHeight)
+                return new Timeline[] { GetDoubleAnimation(true) };
+            else
+                return new Timeline[] { GetDoubleAnimation(false) };
         }
 
         private void OnCompleted(object sender, object e)
@@ -80,19 +80,19 @@ namespace App4.UI.Controls
             AnimationCompleted?.Invoke(this, new RoutedEventArgs());
         }
 
-        private DoubleAnimation GetDoubleAnimation(bool animationType, Duration duration, EasingFunctionBase easingFunction = null)
+        private DoubleAnimation GetDoubleAnimation(bool animationType)
         {
             var animation = new DoubleAnimation
             {
                 FillBehavior = FillBehavior.Stop,
-                Duration = duration,
+                Duration = this.StoryboardDuration,
                 From = animationType ? this.ActualHeight : this.ActualWidth,
-                To = animationType ? _finalSize.Height : _finalSize.Width,
+                To = animationType ? _animationSize.Height : _animationSize.Width,
                 EnableDependentAnimation = true,
                 AutoReverse = false,
-                EasingFunction = easingFunction
+                EasingFunction = this.EasingFunction
             };
-
+            
             Storyboard.SetTarget(animation, this);
             Storyboard.SetTargetProperty(animation, animationType ? "Height" : "Width");
 
