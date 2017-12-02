@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -23,7 +24,7 @@ namespace App4
         {
             if (!RTDContentDialog.IsAnimationCompleted) return;
 
-            RTDContentDialog.CanAnimate = true;
+            //RTDContentDialog.CanAnimate = true;
 
             //Can comment this
             if (_changedView)
@@ -33,6 +34,7 @@ namespace App4
 
             _changedView = !_changedView;
 
+            Debug.WriteLine(RTDContentDialog.CanAnimate);
             //Can comment this
             //RTDContentDialog.Content = new Grid { Width = 460, Height = 100, Background = new SolidColorBrush(Colors.Red) };
         }
@@ -64,11 +66,11 @@ namespace App4
 
             VisualStateManager.GoToState(this, "DefaultState", true);
 
-            if (RTDContentDialog != null)
-                RTDContentDialog.AnimationCompleted += OnAnimationCompleted;
+            //if (RTDContentDialog != null)
+            //    RTDContentDialog.AnimationCompleted += OnAnimationCompleted;
 
-            void OnAnimationCompleted(object sender, RoutedEventArgs e) =>
-                RTDContentDialog.CanAnimate = false;
+            //void OnAnimationCompleted(object sender, RoutedEventArgs e) =>
+            //    RTDContentDialog.CanAnimate = false;
         }
     }
 }
