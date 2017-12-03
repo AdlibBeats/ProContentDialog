@@ -33,7 +33,7 @@ namespace App4
                 VisualStateManager.GoToState(this, "StateB", true);
 
             _changedView = !_changedView;
-            
+
             //Can comment this
             //RTDContentDialog.Content = new Grid { Width = 460, Height = 100, Background = new SolidColorBrush(Colors.Red) };
         }
