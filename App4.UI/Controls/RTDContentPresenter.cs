@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -18,8 +19,8 @@ namespace App4.UI.Controls
         public RTDContentPresenter()
         {
             this.DefaultStyleKey = typeof(RTDContentPresenter);
-    }
-        
+        }
+
         protected override Size ArrangeOverride(Size finalSize)
         {
             var arrangeOverride = this.CanAnimate ? StartAnimation(finalSize) : finalSize;
@@ -58,7 +59,7 @@ namespace App4.UI.Controls
 
         private IEnumerable<Timeline> GetDoubleAnimations()
         {
-            if (this.AnimationType == RTDAnimationType.FullSize)
+            if (this.AnimationType == RTDAnimationType.Both)
                 return new Timeline[]
                 {
                     GetDoubleAnimation(true),
@@ -139,6 +140,6 @@ namespace App4.UI.Controls
         }
 
         public static readonly DependencyProperty AnimationTypeProperty =
-            DependencyProperty.Register("AnimationType", typeof(RTDAnimationType), typeof(RTDContentPresenter), new PropertyMetadata(RTDAnimationType.FullSize));
+            DependencyProperty.Register("AnimationType", typeof(RTDAnimationType), typeof(RTDContentPresenter), new PropertyMetadata(RTDAnimationType.Both));
     }
 }

@@ -4,12 +4,14 @@
     xmlns:local="using:App4.UI.Controls">
 
     <Style TargetType="local:RTDContentDialog">
-        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="Background" Value="Black"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="BackgroundOpacity" Value="0.6"/>
         <Setter Property="StoryboardDuration" Value="0:0:0.15"/>
         <Setter Property="EasingFunction" Value="{x:Null}"/>
         <Setter Property="CanAnimate" Value="False"/>
-        <Setter Property="AnimationType" Value="FullSize"/>
+        <Setter Property="AnimationType" Value="Both"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:RTDContentDialog">

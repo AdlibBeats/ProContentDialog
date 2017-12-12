@@ -2,7 +2,7 @@
 {
     public enum RTDAnimationType
     {
-        FullSize,
+        Both,
         OnlyWidth,
         OnlyHeight
     }

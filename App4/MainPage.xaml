@@ -53,10 +53,12 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Bottom"
                 Tapped="OnShowButtonTapped"/>
-        <custom:RTDContentDialog x:Name="RTDContentDialog"
-                                   VerticalContentAlignment="Top" HorizontalContentAlignment="Center"
-                                   Padding="0,100,0,0" StoryboardDuration="0:0:0.3" AnimationType="FullSize" CanAnimate="True"
-                                   Background="Black" BackgroundOpacity="0.6">
+        <custom:RTDContentDialog
+            x:Name="RTDContentDialog"
+            StoryboardDuration="0:0:0.3"
+            AnimationType="Both"
+            VerticalContentAlignment="Top"
+            Padding="0,100,0,0">
             <custom:RTDContentDialog.EasingFunction>
                 <CircleEase EasingMode="EaseOut"/>
             </custom:RTDContentDialog.EasingFunction>

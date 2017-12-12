@@ -24,7 +24,7 @@ namespace App4
         {
             if (!RTDContentDialog.IsAnimationCompleted) return;
 
-            //RTDContentDialog.CanAnimate = true;
+            RTDContentDialog.CanAnimate = true;
 
             //Can comment this
             if (_changedView)
@@ -65,11 +65,11 @@ namespace App4
 
             VisualStateManager.GoToState(this, "DefaultState", true);
 
-            //if (RTDContentDialog != null)
-            //    RTDContentDialog.AnimationCompleted += OnAnimationCompleted;
+            if (RTDContentDialog != null)
+                RTDContentDialog.AnimationCompleted += OnAnimationCompleted;
 
-            //void OnAnimationCompleted(object sender, RoutedEventArgs e) =>
-            //    RTDContentDialog.CanAnimate = false;
+            void OnAnimationCompleted(object sender, RoutedEventArgs e) =>
+                RTDContentDialog.CanAnimate = false;
         }
     }
 }

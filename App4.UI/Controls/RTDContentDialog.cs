@@ -46,10 +46,19 @@ namespace App4.UI.Controls
 
             _layoutBackground = GetTemplateChild("LayoutBackground") as Border;
             if (_layoutBackground != null)
+            {
+                _layoutBackground.Opacity = this.BackgroundOpacity;
                 _layoutBackground.Tapped += OnLayoutBackgroundTapped;
+            }
 
             VisualStateManager.GoToState(this, "CollapsedState", true);
             UpdateSizeState();
+        }
+
+        private void UpdateBackgroundOpacity()
+        {
+            if (_layoutBackground == null) return;
+            _layoutBackground.Opacity = this.BackgroundOpacity;
         }
 
         private void UpdateStoryboardDuration()
@@ -97,7 +106,7 @@ namespace App4.UI.Controls
 
         private void UpdateSizeState()
         {
-            VisualStateManager.GoToState(this, FullSizeDesire ? "FullSizeState" : "NormalState", true);
+            VisualStateManager.GoToState(this, this.FullSizeDesire ? "FullSizeState" : "NormalState", true);
         }
 
         public void Show()
@@ -117,7 +126,15 @@ namespace App4.UI.Controls
         }
 
         public static readonly DependencyProperty BackgroundOpacityProperty =
-            DependencyProperty.Register(nameof(BackgroundOpacity), typeof(double), typeof(RTDContentDialog), new PropertyMetadata(0.0));
+            DependencyProperty.Register(nameof(BackgroundOpacity), typeof(double), typeof(RTDContentDialog), new PropertyMetadata(0.6, OnBackgroundOpacityChanged));
+
+        private static void OnBackgroundOpacityChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var contentDialog = d as RTDContentDialog;
+            if (contentDialog == null) return;
+
+            contentDialog.UpdateBackgroundOpacity();
+        }
 
         public bool FullSizeDesire
         {
@@ -203,7 +220,7 @@ namespace App4.UI.Controls
         }
 
         public static readonly DependencyProperty AnimationTypeProperty =
-            DependencyProperty.Register("AnimationType", typeof(RTDAnimationType), typeof(RTDContentDialog), new PropertyMetadata(RTDAnimationType.FullSize, OnAnimationTypeChanged));
+            DependencyProperty.Register("AnimationType", typeof(RTDAnimationType), typeof(RTDContentDialog), new PropertyMetadata(RTDAnimationType.Both, OnAnimationTypeChanged));
 
         private static void OnAnimationTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
